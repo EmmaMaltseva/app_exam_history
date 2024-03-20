@@ -4,10 +4,11 @@ void main() {
   runApp(const MyApp());
 }
 
+//stateleswidget - статичный, не изменяется во время исполнения
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // виджет основного окна приложения (совокупность всех окон)
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//StatefulWidget для отображения изменяющихся состояний
+//домашняя страница:
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
