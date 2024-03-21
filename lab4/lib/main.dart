@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart'; //библиотека для реализации звонка
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  //функция звонка
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,70 +62,114 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Center(
-        child: Card(
+        child: SingleChildScrollView(
             child: Column(
           children: [
-            ListTile(title: const Text('1625')),
-            Image(image: AssetImage('images/pic1.jpg')),
-            Row(
-              children: [
-                Column(
-                  children: [
-                    Text('Общежитие №20'),
-                    Text('Краснодар, ул. Калинина, 13')
-                  ],
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 320,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('images/obschaga.jpg'),
                 ),
-                Row(
-                  children: [
-                    const Icon(Icons.favorite, color: Colors.red),
-                    Text(
-                      '$_counter',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                  ],
-                )
-              ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Общежитие №20',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        'Краснодар, ул. Калинина, 13',
+                        style: const TextStyle(color: Colors.grey),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        elevation: 0.0,
+                        backgroundColor: Colors.transparent,
+                        onPressed: _incrementCounter,
+                        tooltip: 'Increment',
+                        child: const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                      ),
+                      Text(
+                        '$_counter',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(children: [
-                  const Icon(Icons.phone, color: Colors.green),
-                  Text(
-                    'Позвонить',
-                    style:
-                        TextStyle(height: 5, fontSize: 10, color: Colors.green),
-                  ),
-                ]),
-                Column(children: [
-                  const Icon(Icons.location_on, color: Colors.green),
-                  Text(
-                    'Маршрут',
-                    style:
-                        TextStyle(height: 5, fontSize: 10, color: Colors.green),
-                  ),
-                ]),
-                Column(children: [
+                Expanded(
+                  child: Column(children: [
+                    IconButton(
+                      //2 след строчки убирают лишний padding между иконкой и тексто
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: Icon(Icons.phone, color: Colors.green),
+                      onPressed: () {
+                        setState(() {
+                          _makePhoneCall('tel:0597924917');
+                        });
+                      },
+                    ),
+                    Text(
+                      'Позвонить',
+                      style: TextStyle(fontSize: 15, color: Colors.green),
+                    ),
+                  ]),
+                ),
+                Expanded(
+                  child: Column(children: [
+                    const Icon(Icons.location_on, color: Colors.green),
+                    Text(
+                      'Маршрут',
+                      style: TextStyle(fontSize: 15, color: Colors.green),
+                    ),
+                  ]),
+                ),
+                Expanded(
+                    child: Column(children: [
                   const Icon(Icons.share, color: Colors.green),
                   Text(
                     'Поделиться',
-                    style:
-                        TextStyle(height: 5, fontSize: 10, color: Colors.green),
+                    style: TextStyle(fontSize: 15, color: Colors.green),
                   ),
-                ])
+                ])),
               ],
             ),
-            Text(
-              'Студенческий городок или так называемый кампус Кубанского ГАУ состоит из двадцати общежитий, в которых проживает более 8000 студентов, что состав-ляет 96% от всех нуждающихся. Студенты первого курса обеспечены местами в об-щежитии полностью. В соответствии с Положением о студенческих общежитиях университета, при поселении между администрацией и студентами заключается договор найма жилого помещения. Воспитательная работа в общежитиях направ-лена на улучшение быта, соблюдение правил внутреннего распорядка, отсутствия асоциальных явлений в молодежной среде. Условия проживания в общежитиях университетского кампуса полностью отвечают санитарным нормам и требова-ниям: наличие оборудованных кухонь, душевых комнат, прачечных, читальных за-лов, комнат самоподготовки, помещений для заседаний студенческих советов и наглядной агитации. С целью улучшения условий быта студентов активно работает система студенческого самоуправления - студенческие советы организуют всю ра-боту по самообслуживанию.»',
-              style: TextStyle(color: Colors.green),
+            Container(
+              margin: const EdgeInsets.all(25),
+              child: Text(
+                'Студенческий городок или так называемый кампус Кубанского ГАУ состоит из двадцати общежитий, в которых проживает более 8000 студентов, что состав-ляет 96% от всех нуждающихся. Студенты первого курса обеспечены местами в об-щежитии полностью. В соответствии с Положением о студенческих общежитиях университета, при поселении между администрацией и студентами заключается договор найма жилого помещения. Воспитательная работа в общежитиях направ-лена на улучшение быта, соблюдение правил внутреннего распорядка, отсутствия асоциальных явлений в молодежной среде. Условия проживания в общежитиях университетского кампуса полностью отвечают санитарным нормам и требова-ниям: наличие оборудованных кухонь, душевых комнат, прачечных, читальных за-лов, комнат самоподготовки, помещений для заседаний студенческих советов и наглядной агитации. С целью улучшения условий быта студентов активно работает система студенческого самоуправления - студенческие советы организуют всю ра-боту по самообслуживанию.»',
+                style: TextStyle(color: Colors.black),
+              ),
             )
           ],
         )),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
