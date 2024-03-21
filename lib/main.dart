@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 Ink(
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 243, 33, 58),
