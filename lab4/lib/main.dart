@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:url_launcher/url_launcher.dart'; //библиотека для реализации звонка
+import 'package:url_launcher/url_launcher.dart'; //библиотека для реализации звонка и открытия карт
+import 'package:share/share.dart';
 
 void main() {
   runApp(const MyApp());
@@ -125,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: Column(children: [
                     IconButton(
-                      //2 след строчки убирают лишний padding между иконкой и тексто
+                      //2 след строчки убирают лишний padding между иконкой и текстом
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
                       icon: Icon(Icons.phone, color: Colors.green),
@@ -143,7 +144,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                   child: Column(children: [
-                    const Icon(Icons.location_on, color: Colors.green),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: Icon(Icons.location_on, color: Colors.green),
+                      onPressed: () {
+                        setState(() {
+                          MapUtils.openMap(45.050329, 38.920740);
+                        });
+                      },
+                    ),
                     Text(
                       'Маршрут',
                       style: TextStyle(fontSize: 15, color: Colors.green),
@@ -152,7 +162,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                     child: Column(children: [
-                  const Icon(Icons.share, color: Colors.green),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    icon: Icon(Icons.share, color: Colors.green),
+                    onPressed: () {
+                      setState(() {
+                        Share.share(
+                            'https://kubsau.ru/entrant/podig/obshchezhitiya/');
+                      });
+                    },
+                  ),
                   Text(
                     'Поделиться',
                     style: TextStyle(fontSize: 15, color: Colors.green),
@@ -171,5 +191,19 @@ class _MyHomePageState extends State<MyHomePage> {
         )),
       ),
     );
+  }
+}
+
+class MapUtils {
+  MapUtils._();
+
+  static Future<void> openMap(double latitude, double longitude) async {
+    String googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+    if (await canLaunch(googleUrl)) {
+      await launch(googleUrl);
+    } else {
+      throw 'Could not open the map.';
+    }
   }
 }
