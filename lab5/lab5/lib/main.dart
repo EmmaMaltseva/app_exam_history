@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -88,10 +89,23 @@ class ThirdScreen extends StatefulWidget {
 }
 
 class _ThirdScreenState extends State<ThirdScreen> {
+  final List<String> _array = [];
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: (context, index) {
-      return Text('строка $index');
+    return ListView.builder(itemBuilder: (context, i) {
+      print('num $i : нечетное = ${i.isOdd}');
+
+      if (i.isOdd) return Divider();
+
+      final int index = i ~/ 2;
+
+      print('index $index');
+      print('lenght ${_array.length}');
+
+      if (index >= _array.length)
+        _array.addAll(['$index', '${index + 1}', '${index + 2}']);
+      return ListTile(title: Text(pow(int.parse(_array[index]), 2).toString()));
     });
   }
 }
