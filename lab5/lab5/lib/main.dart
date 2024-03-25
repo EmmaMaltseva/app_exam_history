@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
               ),
               bottom: TabBar(
                 tabs: [
-                  Tab(text: 'Простой список'),
-                  Tab(text: 'Бесконечный список'),
+                  Tab(text: 'Простой'),
+                  Tab(text: 'Бесконечный'),
                   Tab(text: 'Степень 2'),
                 ],
               ),
@@ -105,7 +105,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
 
       if (index >= _array.length)
         _array.addAll(['$index', '${index + 1}', '${index + 2}']);
-      return ListTile(title: Text(pow(int.parse(_array[index]), 2).toString()));
+      return ListTile(
+          title: Text('2' +
+              ' ^ ' +
+              _array[index] +
+              ' = ' +
+              pow(2, int.parse(_array[index])).toString()));
     });
   }
 }
